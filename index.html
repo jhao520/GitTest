@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="hotnew">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>今日头条</title>
+	</head>
+	<link rel="stylesheet" href="css/base.css" />
+	<script src="dist/angular.js"></script>
+	<script src="dist/angular-route.js"></script>
+	<body>
+	</body>
+		<!--视图渲染-->
+		<div ng-view=""></div>
+	<script>
+		var app = angular.module('hotnew',['ngRoute']);
+		app.config(function($routeProvider){
+			$routeProvider.when('/index',{
+				controller:'indexCtrl',
+				templateUrl:'view/index.html'
+			})
+			//如果找不到对应路由就跳到该页面
+			.otherwise({
+				redirecTo:'/index'
+			})
+		})
+		//定义一个主页控制器
+		app.controller('indexCtrl',['$scope', '$http', function($scope, $http){
+			$http.get('baiduApi.php').success(function(data){
+				console.log(data);
+				$scope.news = data.newslist;
+			})
+		}])
+	</script>
+</html>
